@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Bludo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3</Id>
+  <Name>Супы</Name>
+  <Rezepts>
+    <Rezept>
+      <Id>3</Id>
+      <Name>user1</Name>
+      <bludId>3</bludId>
+      <Ingrid>Крахмал</Ingrid>
+      <soder>Налить</soder>
+      <RezeptData>25 декабря 2018 г.</RezeptData>
+      <Bludo_Id>0</Bludo_Id>
+    </Rezept>
+  </Rezepts>
+</Bludo>
