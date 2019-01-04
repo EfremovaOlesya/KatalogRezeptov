@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Katalog_v_2.Models.Interface
 {
-    interface IUser
+    interface IUser: IModelService
     {
-        bool Registration(string Login, string Password);
-
-        Boolean Authorization(string Login, string Password);
+        bool Authorization(User new_user);
+        bool Registrations(User new_user);
     }
 }

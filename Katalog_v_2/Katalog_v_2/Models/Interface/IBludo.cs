@@ -7,16 +7,9 @@ using System.Threading.Tasks;
 
 namespace Katalog_v_2.Models.Interface
 {
-    interface IBludo
+    interface IBludo: IModelService
     {
-        BludoModel GetElement(int id);
-
-        void AddElement(BludoModel model);
-
-        List<BludoModel> GetList();
-
-        void AddRezept(RezeptModel model);
-
-        void DelElement(int id);
+        void AddRezept(Rezept rezept);
+        Rezept GetRezept(string name, int Bludo_id);
     }
 }

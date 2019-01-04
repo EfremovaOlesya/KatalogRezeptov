@@ -9,41 +9,47 @@ using System.Web;
 
 namespace Katalog_v_2.Service.BDService
 {
-    public class UserService : IUser
+    public class UserService: AbstractDbService<User>, IUser
     {
-        private Context context;
+        private dbContext context = new dbContext();
 
-        public UserService(Context context)
-        {
-            this.context = context;
-        }
+        public override DbSet<User> Pata { get { return context.Users; } }
 
-        public bool Registration(string Login, string Password)
+        public override dbContext Сontext { get { return context; } }
+
+        public override List<AModel> GetList()
         {
-            User element = context.Users.FirstOrDefault(rec => rec.Login == Login);
-            if (element != null)
+            List<AModel> amodel = new List<AModel>();
+            List<User> Bludos = context.Users.ToList();
+            foreach (User bludo in Bludos)
+            {
+                amodel.Add(bludo);
+            }
+            return amodel;
+        }     
+
+        public bool Registrations(User new_user) {
+            User user = context.Users.FirstOrDefault(rec => rec.Login.Equals(new_user.Login));
+            if (user != null)
             {
                 return false;
             }
-            context.Users.Add(new User
-            {
-                Login = Login,
-                Password = Password,
-            });
-            context.SaveChanges();
-            return true;
-        }
-
-        public bool Authorization(string Login, string Password)
-        {
-            User element = context.Users.FirstOrDefault(rec => rec.Login == Login && rec.Password == Password);
-            if (element != null)
-            {
+            else {
+                AddElement(new_user);
                 return true;
             }
-            else
+        }
+
+        public bool Authorization(User new_user)
+        {
+            User user = context.Users.FirstOrDefault(rec => rec.Login.Equals(new_user.Login) && rec.Password.Equals(new_user.Password));
+            if (user == null)
             {
                 return false;
+            }
+            else
+            { 
+                return true;
             }
         }
     }

@@ -9,113 +9,40 @@ using Katalog_v_2.Models.Interface;
 
 namespace Katalog_v_2.Service.BDService
 {
-    public class BludoService : IBludo
+    public class BludoService : AbstractDbService<Bludo>, IBludo
     {
-        private Context context;
+        private dbContext context = new dbContext();
 
-        public BludoService(Context context)
+        public override DbSet<Bludo> Pata { get { return context.Bludoes; } }
+
+        public override dbContext Сontext { get { return context; } }
+
+        public override List<AModel> GetList()
         {
-            this.context = context;
+            List<AModel> amodel = new List<AModel>();
+            List<Bludo> Bludos = context.Bludoes.ToList();
+            List < Rezept > rezept= context.Rezepts.ToList();
+            foreach (Bludo bludo in Bludos) {
+                bludo.Rezepts = rezept.FindAll(rec => rec.bludId == bludo.Id);
+                amodel.Add(bludo);
+            }
+            return amodel;
         }
 
-        public void AddElement(BludoModel model)
-        {
-            Bludo element = context.Bludoes.FirstOrDefault(rec => rec.BludoName == model.BludoName);
-            if (element != null)
-            {
-                throw new Exception("Уже есть блюдо с таким названием");
+        public void AddRezept(Rezept rezept) {
+            Bludo bludo = context.Bludoes.Find(rezept.bludId);
+            if (bludo.Rezepts == null) {
+                bludo.Rezepts = new List<Rezept>();
             }
-            context.Bludoes.Add(new Bludo
-            {
-                BludoName = model.BludoName,
-                Rezepts = model.Rezepts.Select(rec => new Rezept
-                {
-                    Id = rec.Id,
-                    RezeptName = rec.RezeptName,
-                    RezeptData = rec.RezeptData,
-                    Ingrid = rec.Ingrid,
-                    soder = rec.soder,
-                    Image = rec.Image,
-                    ImageMimeType = rec.ImageMimeType
-
-                }).ToList()
-            });
+            bludo.Rezepts.Add(rezept);
             context.SaveChanges();
         }
 
-        public void AddRezept(RezeptModel model)
+        public Rezept GetRezept(string name, int Bludo_id)
         {
-            Bludo element = context.Bludoes.FirstOrDefault(rec => rec.Id == model.bludId);
-            if (element != null)
-            {
-                if (element.Rezepts == null)
-                {
-                    element.Rezepts = new List<Rezept>();
-                }
-                element.Rezepts.Add(new Rezept
-                {
-                    RezeptName = model.RezeptName,
-                    RezeptData = model.RezeptData,
-                    Ingrid = model.Ingrid,
-                    soder = model.soder,
-                    bludId = model.bludId,
-                    Image = model.Image,
-                    ImageMimeType = model.ImageMimeType
-
-                });
-                context.SaveChanges();
-            }
-            else
-            {
-                throw new Exception("Элемент не найден");
-            }
+            Rezept rezept = context.Rezepts.FirstOrDefault(rec => rec.Name.Equals(name) && rec.bludId == Bludo_id);
+            
+            return rezept;
         }
-
-        public BludoModel GetElement(int id)
-        {
-            BludoModel element = GetList().Find(rec => rec.Id == id);
-            if (element != null)
-            {
-                return element;
-            }
-            throw new Exception("Элемент не найден");
-        }
-
-        public List<BludoModel> GetList()
-        {
-            List<BludoModel> result = context.Bludoes.Select(rec => new BludoModel
-            {
-                Id = rec.Id,
-                BludoName = rec.BludoName,
-                Rezepts = rec.Rezepts.Select(rez => new RezeptModel
-                {
-                    Id = rez.Id,
-                    bludId = rec.Id,
-                    Ingrid = rez.Ingrid,
-                    RezeptData = rez.RezeptData,
-                    RezeptName = rez.RezeptName,
-                    soder = rez.soder,
-                    Image = rez.Image,
-                    ImageMimeType = rez.ImageMimeType
-                }).ToList()
-            })
-                .ToList();
-            return result;
-        }
-
-        public void DelElement(int id)
-        {
-            Bludo element = context.Bludoes.FirstOrDefault(rec => rec.Id == id);
-            if (element != null)
-            {
-                context.Bludoes.Remove(element);
-                context.SaveChanges();
-            }
-            else
-            {
-                throw new Exception("Элемент не найден");
-            }
-        }
-
     }
 }
