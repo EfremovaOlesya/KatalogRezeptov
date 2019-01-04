@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div layout:fragment="content">
+    <div id="heading">
+        <h1>Каталог рецептов</h1>
+    </div>
+    <section>
+        <blockquote class="">
+            <p>
+                Любите когда все, что называется "по полкам"?
+            </p>
+            <p>
+                Тогда каталог рецептов именно то, что вам нужно! У хорошей хозяйки самое необходимое на кухне - на
+                расстоянии вытянутой руки. Вот мы и подумали, что наши замечательные рецепты по которым вы уже готовили
+                и будете продолжать, нужно собрать в доступный, удобный и понятный каталог.
+            </p>
+        </blockquote>
+        <div class="table-responsive">
+
+            <table border="1" cellspacing="10" cellpadding="10" class="table table-striped">
+
+                @{
+
+                    foreach (var Bludo in ViewBag.Bludoes)
+                    {
+                        <tr>
+                            <td id="@Bludo.Id"><a href="/Bludo/AddRezept/@Bludo.Id">@Bludo.Name</a></td>
+
+                            @if (Bludo.Rezepts != null)
+                            {
+                                foreach (var Rezept in Bludo.Rezepts)
+                                {
+
+                                <tr>
+                                    <td bgcolor="#FFDAB9" headers="@Rezept.bludId"><a href="/Bludo/Rezept?RezeptName=@Rezept.Name&bludId=@Rezept.bludId">@Rezept.Name</a></td>
+                                </tr>
+                            }
+                        }
+                            </tr>
+                        }
+                }
+
+
+            </table>
+        </div>
+    </section>
+</div>
+

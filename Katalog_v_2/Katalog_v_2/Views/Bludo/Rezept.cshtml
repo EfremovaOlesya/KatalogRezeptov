@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+<div layout:fragment="content">
+    <div id="heading">
+        <h1>@ViewBag.Rezepts.Name</h1>
+        @if (@ViewBag.Rezepts.Image != null)
+        {
+            <div class="pull-left" style="margin-right: 10px">
+                <img class="img-thumbnail" width="500" height="500"
+                     src="@Url.Action("GetImage", "Bludo",
+               new { @ViewBag.Rezepts.Name, @ViewBag.Rezepts.bludId})" />
+            </div>
+        }
+    </div>
+    <section>
+        <div id=" bluda">
+            <h2>Ингредиенты</h2>
+            <p style="word-break: break-all">
+                @ViewBag.Rezepts.Ingrid
+            </p>
+            <h2>Содержание</h2>
+            <p style="word-break: break-all">@ViewBag.Rezepts.soder</p>
+        </div>
+    </section>
+</div>
+

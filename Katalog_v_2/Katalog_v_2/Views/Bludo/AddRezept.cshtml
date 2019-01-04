@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div layout:fragment="content">
+    <section>
+        <div class="form-wrap">
+            <div class="profile">
+                <h1>Рецепт</h1>
+            </div>
+            <h2>Раздел @ViewBag.Bludo.Name</h2>
+            @using (Html.BeginForm("AddRezept", "Bludo",
+FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h2>Название</h2>
+                <div>
+                    <input type="text" style="white-space: normal;" name="Name" id="width1" />
+                </div>
+                <div style="position:relative;">
+                    <label>Картинка</label>
+                    <a class='btn' href='javascript:;'>
+                        Выберите файл...
+                        <input type="file" name="imagedata" size="500"
+                               style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                               onchange='$("#upload-file-info").html($(this).val());'>
+                    </a>
+                    <span class='label label-info' id="upload-file-info"></span>
+                </div>
+
+                <h2>Ингредиенты</h2>
+                <div>
+                    <input type="text" style="white-space: normal;" name="ingrid" id="width" />
+                </div>
+                <h2>Содержание</h2>
+                <div>
+                    <input type="text" style="white-space: normal;" name="soder" id="width" />
+                </div>
+                <input type="hidden" name="bludId" value="@ViewBag.Bludo.Id">
+                <button type="submit" class="add" href="/Bludo/AddRezept">Добавить></button>
+            }
+        </div>
+    </section>
+</div>
